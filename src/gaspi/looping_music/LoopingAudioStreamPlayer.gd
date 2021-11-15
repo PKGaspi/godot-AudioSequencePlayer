@@ -87,4 +87,5 @@ func set_playing(value: bool) -> void:
 	pass # TODO: implement
 
 func get_stream_paused() -> bool:
-	return _intro_player.stream_paused and _loop_player.stream_paused and _outro_player.stream_paused
+	return _intro_player.stream_paused \
+	and _loop_player.stream_paused and _outro_player.stream_paused
