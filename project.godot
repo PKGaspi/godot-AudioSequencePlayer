@@ -9,18 +9,24 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node",
-"class": "LoopingAudioStreamPlayer",
+"base": "Resource",
+"class": "AudioSegmentResource",
 "language": "GDScript",
-"path": "res://src/gaspi/looping_music/LoopingAudioStreamPlayer.gd"
+"path": "res://src/gaspi/looping_music/AudioSegmentResource.gd"
+}, {
+"base": "Node",
+"class": "SequenceAudioStreamPlayer",
+"language": "GDScript",
+"path": "res://src/gaspi/looping_music/SequenceAudioStreamPlayer.gd"
 } ]
 _global_script_class_icons={
-"LoopingAudioStreamPlayer": ""
+"AudioSegmentResource": "",
+"SequenceAudioStreamPlayer": ""
 }
 
 [application]
 
-config/name="Looping Music"
+config/name="Sequence Audio Player"
 config/icon="res://icon.png"
 
 [physics]
