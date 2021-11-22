@@ -1,0 +1,79 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://resources/funky_outro.tres" type="Resource" id=1]
+[ext_resource path="res://resources/funky_intro.tres" type="Resource" id=2]
+[ext_resource path="res://src/gaspi/looping_music/SequenceAudioStreamPlayer.gd" type="Script" id=3]
+[ext_resource path="res://resources/funky_loop.tres" type="Resource" id=4]
+
+[node name="Demo" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 10
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 1004.0
+margin_bottom = 590.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 984.0
+margin_bottom = 14.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_left = 415.0
+margin_top = 18.0
+margin_right = 569.0
+margin_bottom = 38.0
+size_flags_horizontal = 4
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 38.0
+margin_bottom = 20.0
+text = "play"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 42.0
+margin_right = 52.0
+margin_bottom = 20.0
+custom_constants/separation = 10
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 56.0
+margin_right = 96.0
+margin_bottom = 20.0
+text = "next"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 100.0
+margin_right = 110.0
+margin_bottom = 20.0
+custom_constants/separation = 10
+
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 114.0
+margin_right = 154.0
+margin_bottom = 20.0
+text = "stop"
+
+[node name="SequenceAudioStreamPlayer" type="Node" parent="."]
+script = ExtResource( 3 )
+segments = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 1 ) ]
+autoplay = true
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="SequenceAudioStreamPlayer" method="play"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button2" to="SequenceAudioStreamPlayer" method="next"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button3" to="SequenceAudioStreamPlayer" method="stop"]
