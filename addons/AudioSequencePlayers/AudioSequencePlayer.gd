@@ -29,6 +29,8 @@ func _ready() -> void:
 	# Create child nodes.
 	for segment in segments:
 		assert(segment is AudioSegment)
+		if segment in _players.keys():
+			segment = segment.duplicate()
 		var player = AudioStreamPlayer.new()
 		player.name = name + "_" + segment.name
 		player.stream = segment.stream
@@ -36,7 +38,7 @@ func _ready() -> void:
 		player.bus = bus
 		player.connect("finished", self, "_on_segment_finished")
 		add_child(player)
-		_players[segment.name] = player
+		_players[segment] = player
 	
 	if autoplay:
 		play()
@@ -45,7 +47,7 @@ func _on_segment_finished() -> void:
 	if not playing:
 		return
 	if looping:
-		_players[current_segment.name].play()
+		_players[current_segment].play()
 		return
 	emit_signal("segment_finished", current_segment)
 	next_async()
@@ -60,7 +62,7 @@ func play(from_position: float = 0.0) -> void:
 		if from_position < acc + stream_len:
 			# This is the segment to play.
 			current_segment = segment
-			_players[current_segment.name].play(from_position - acc)
+			_players[current_segment].play(from_position - acc)
 			looping = current_segment.loop
 			playing = true
 			break
@@ -70,7 +72,7 @@ func play(from_position: float = 0.0) -> void:
 # Causes the music to stop and the system to reset.
 func stop() -> void:
 	playing = false
-	_players[current_segment.name].stop()
+	_players[current_segment].stop()
 	emit_signal("finished")
 	current_segment_index = -1
 	current_segment = null
@@ -84,16 +86,16 @@ func next() -> void:
 	else:
 		# Stopping will emit this player's finished
 		# signal and play the next segment.
-		_players[current_segment.name].stop()
+		_players[current_segment].stop()
 		looping = false
 
 func next_async() -> void:
 	current_segment_index += 1
 	if current_segment_index < len(segments):
 		# Play next segment.
-		_players[current_segment.name].stop()
+		_players[current_segment].stop()
 		current_segment = segments[current_segment_index]
-		_players[current_segment.name].play()
+		_players[current_segment].play()
 		looping = current_segment.loop
 	else:
 		# The sequence has finished.
@@ -107,11 +109,11 @@ func next_sync() -> void:
 
 func set_playing(value: bool) -> void:
 	playing = value
-	_players[current_segment.name].playing = value
+	_players[current_segment].playing = value
 
 func set_stream_paused(value: bool) -> void:
 	stream_paused = value
-	_players[current_segment.name].stream_paused = value
+	_players[current_segment].stream_paused = value
 
 func get_stream_paused() -> bool:
-	return _players[current_segment.name].stream_paused
+	return _players[current_segment].stream_paused
