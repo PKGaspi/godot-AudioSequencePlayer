@@ -10,24 +10,28 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Resource",
-"class": "AudioSegmentResource",
+"class": "AudioSegment",
 "language": "GDScript",
-"path": "res://src/gaspi/looping_music/AudioSegmentResource.gd"
+"path": "res://addons/AudioSequencePlayers/AudioSegmentResource.gd"
 }, {
 "base": "Node",
-"class": "SequenceAudioStreamPlayer",
+"class": "AudioSequencePlayer",
 "language": "GDScript",
-"path": "res://src/gaspi/looping_music/SequenceAudioStreamPlayer.gd"
+"path": "res://addons/AudioSequencePlayers/AudioSequencePlayer.gd"
 } ]
 _global_script_class_icons={
-"AudioSegmentResource": "",
-"SequenceAudioStreamPlayer": ""
+"AudioSegment": "res://addons/AudioSequencePlayers/icons/AudioSegmentResource.svg",
+"AudioSequencePlayer": "res://addons/AudioSequencePlayers/icons/AudioSequencePlayer.svg"
 }
 
 [application]
 
 config/name="Sequence Audio Player"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/AudioSequencePlayers/plugin.cfg" )
 
 [physics]
 

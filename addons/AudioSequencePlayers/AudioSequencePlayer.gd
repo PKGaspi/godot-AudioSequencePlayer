@@ -1,5 +1,5 @@
-class_name SequenceAudioStreamPlayer
 extends Node
+class_name AudioSequencePlayer, "icons/AudioSequencePlayer.svg"
 
 export(Array, Resource) var segments: Array
 
@@ -28,7 +28,7 @@ signal finished()
 func _ready() -> void:
 	# Create child nodes.
 	for segment in segments:
-		assert(segment is AudioSegmentResource)
+		assert(segment is AudioSegment)
 		var player = AudioStreamPlayer.new()
 		player.name = name + "_" + segment.name
 		player.stream = segment.stream
