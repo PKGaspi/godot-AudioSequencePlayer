@@ -2,7 +2,7 @@
 
 [ext_resource path="res://resources/funky_outro.tres" type="Resource" id=1]
 [ext_resource path="res://resources/funky_intro.tres" type="Resource" id=2]
-[ext_resource path="res://src/gaspi/looping_music/SequenceAudioStreamPlayer.gd" type="Script" id=3]
+[ext_resource path="res://addons/AudioSequencePlayers/AudioSequencePlayer.gd" type="Script" id=3]
 [ext_resource path="res://resources/funky_loop.tres" type="Resource" id=4]
 
 [node name="Demo" type="Control"]

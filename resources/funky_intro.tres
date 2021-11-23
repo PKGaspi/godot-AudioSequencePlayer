@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://src/gaspi/looping_music/AudioSegmentResource.gd" type="Script" id=1]
+[ext_resource path="res://addons/AudioSequencePlayers/AudioSegmentResource.gd" type="Script" id=1]
 [ext_resource path="res://assets/music/Funky_Drum_n_Bass-intro.wav" type="AudioStream" id=2]
 
 [resource]

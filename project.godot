@@ -27,6 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Sequence Audio Player"
+run/main_scene="res://src/Demo.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
