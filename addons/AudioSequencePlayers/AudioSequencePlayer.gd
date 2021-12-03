@@ -9,9 +9,6 @@ var playing: bool = false
 export var autoplay: bool = false
 var stream_paused: bool = false setget set_stream_paused
 var looping: bool = false
-# sync_outro: if true, waits for the current loop iteration to finish
-# before playing the outro plays.
-export var sync_outro: bool = true
 export(int, "Stereo", "Center", "Surround") var mix_target: int = 0
 export var bus: String = "Master"
 
@@ -58,7 +55,7 @@ func play(from_position: float = 0.0) -> void:
 	var acc = .0
 	current_segment_index = 0
 	for segment in segments:
-		var stream_len = segment.stream.get_length()
+		var stream_len = segment.get_length()
 		if from_position < acc + stream_len:
 			# This is the segment to play.
 			current_segment = segment
@@ -68,6 +65,25 @@ func play(from_position: float = 0.0) -> void:
 			break
 		acc += stream_len
 		
+
+func seek(to_position: float) -> void:
+	if not playing:
+		return
+	current_segment_index = 0
+	for segment in segments:
+		var stream_len = segment.set_length()
+		if to_position < stream_len:
+			if to_position < 0:
+				stop()
+				return
+			# This is the segment to seek to.
+			_players[current_segment].stop()
+			current_segment = segment
+			_players[current_segment].play(to_position)
+			looping = current_segment.loop
+			break
+		else:
+			to_position -= stream_len
 
 # Causes the music to stop and the system to reset.
 func stop() -> void:
@@ -117,3 +133,11 @@ func set_stream_paused(value: bool) -> void:
 
 func get_stream_paused() -> bool:
 	return _players[current_segment].stream_paused
+
+func get_playback_position() -> float:
+	var acc: float = .0
+	for i in range(current_segment_index):
+		acc += segments[i].get_length()
+	acc += current_segment.get_length()
+	return acc
+	
