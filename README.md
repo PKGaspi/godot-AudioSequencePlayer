@@ -74,10 +74,10 @@ that lack a description work as they would work on a
   set to `true`, `current_segment` will finish playing before moving to the next
   one. Otherwise, it will be stopped immediately and the next one will begin. It
   will be called automatically on segments with `loop` set to false
-- `void next_async()`: Forces `current_segment` to stop playing and the next one
+  - `void next_async()`: Forces `current_segment` to stop playing and the next one
   to start. Same as calling `next()` on a segment with `sync_ending` set to
   `false`.
-- `void next_sync()`: Allows `current_segment` to finish and the plays the next
+  - `void next_sync()`: Allows `current_segment` to finish and the plays the next
   segment. Same as calling `next()` on a segment with `sync_ending` set to
   `true`.
 
