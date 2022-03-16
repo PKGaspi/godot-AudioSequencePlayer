@@ -28,6 +28,7 @@ _global_script_class_icons={
 
 config/name="Audio Sequence Player"
 config/description="A small tool to help create sequences of audio stream and play them in order. Facilitates the creation of flexible looping sounds and music."
+run/main_scene="res://src/Demo.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]

@@ -8,4 +8,4 @@ script = ExtResource( 1 )
 name = "intro"
 stream = ExtResource( 2 )
 loop = false
-sync_ending = true
+sync_ending = false

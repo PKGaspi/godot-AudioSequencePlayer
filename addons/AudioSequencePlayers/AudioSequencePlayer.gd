@@ -12,10 +12,11 @@ var looping: bool = false
 export(int, "Stereo", "Center", "Surround") var mix_target: int = 0
 export var bus: String = "Master"
 
-var current_segment_index: int = -1
-var current_segment: Resource
+var _current_segment_index: int = 0
+var _current_segment: Resource setget , get_current_segment
 
-var _players: Dictionary = {}
+var _players: Array
+var _current_player: AudioStreamPlayer setget , get_current_player
 
 signal segment_finished(segment)
 signal finished()
@@ -24,10 +25,10 @@ signal finished()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Create child nodes.
+	_players = []
+	var i = 0
 	for segment in segments:
 		assert(segment is AudioSegment)
-		if segment in _players.keys():
-			segment = segment.duplicate()
 		var player = AudioStreamPlayer.new()
 		player.name = name + "_" + segment.name
 		player.stream = segment.stream
@@ -35,87 +36,83 @@ func _ready() -> void:
 		player.bus = bus
 		player.connect("finished", self, "_on_segment_finished")
 		add_child(player)
-		_players[segment] = player
+		_players.append(player)
+		i += 1
 	
 	if autoplay:
 		play()
 
 func _on_segment_finished() -> void:
+	emit_signal("segment_finished", self._current_segment)
 	if not playing:
 		return
 	if looping:
-		_players[current_segment].play()
+		self._current_player.play()
 		return
-	emit_signal("segment_finished", current_segment)
-	next_async()
-
+	_current_segment_index += 1
+	if _current_segment_index < len(_players):
+		# Play next segment.
+		self._current_player.play()
+		looping = self._current_segment.loop
+	else:
+		_current_segment_index -= 1
+		playing = false
 
 # Plays the intro, and when this one finishes, plays the loop.
 func play(from_position: float = 0.0) -> void:
-	var acc = .0
-	current_segment_index = 0
-	for segment in segments:
-		var stream_len = segment.get_length()
-		if from_position < acc + stream_len:
-			# This is the segment to play.
-			current_segment = segment
-			_players[current_segment].play(from_position - acc)
-			looping = current_segment.loop
-			playing = true
-			break
-		acc += stream_len
-		
+	if playing:
+		# Stop this segment and wait for it to emit signal finished.
+		var previous_player = self._current_player
+		previous_player.stream_paused = false
+		stop()
+		yield(previous_player, "finished")
+	var segment_position = seek(from_position)
+	self._current_player.stream_paused = stream_paused
+	self._current_player.play(segment_position)
+	playing = true
 
-func seek(to_position: float) -> void:
-	if not playing:
-		return
-	current_segment_index = 0
-	for segment in segments:
-		var stream_len = segment.set_length()
-		if to_position < stream_len:
-			if to_position < 0:
-				stop()
-				return
-			# This is the segment to seek to.
-			_players[current_segment].stop()
-			current_segment = segment
-			_players[current_segment].play(to_position)
-			looping = current_segment.loop
+func seek(to_position: float) -> float:
+	if playing:
+		var previous_player = self._current_player
+		previous_player.stream_paused = false
+		stop()
+		yield(previous_player, "finished")
+		playing = true
+	for i in range(len(segments)):
+		if to_position < segments[i].get_length():
+			# This is the segment to play.
+			_current_segment_index = i
+			self._current_player.seek(to_position)
+			self._current_player.playing = playing
+			self._current_player.stream_paused = stream_paused
+			looping = self._current_segment.loop
 			break
-		else:
-			to_position -= stream_len
+		to_position -= segments[i].get_length()
+	return to_position
 
 # Causes the music to stop and the system to reset.
 func stop() -> void:
+	if not playing:
+		return
 	playing = false
-	_players[current_segment].stop()
+	self._current_player.stop()
 	emit_signal("finished")
-	current_segment_index = -1
-	current_segment = null
 
 # Play next segment to the current one.
 func next() -> void:
-	if not is_instance_valid(current_segment):
+	if not is_instance_valid(self._current_segment):
 		return
-	if current_segment.sync_ending:
+	if self._current_segment.sync_ending:
 		next_sync()
 	else:
-		# Stopping will emit this player's finished
-		# signal and play the next segment.
-		_players[current_segment].stop()
-		looping = false
+		next_async()
 
 func next_async() -> void:
-	current_segment_index += 1
-	if current_segment_index < len(segments):
-		# Play next segment.
-		_players[current_segment].stop()
-		current_segment = segments[current_segment_index]
-		_players[current_segment].play()
-		looping = current_segment.loop
-	else:
-		# The sequence has finished.
-		stop()
+	# Stopping will emit this player's finished
+	# signal and play the next segment.
+	looping = false
+	self._current_player.stop()
+
 
 func next_sync() -> void:
 	looping = false
@@ -125,19 +122,31 @@ func next_sync() -> void:
 
 func set_playing(value: bool) -> void:
 	playing = value
-	_players[current_segment].playing = value
+	self._current_player.playing = value
 
 func set_stream_paused(value: bool) -> void:
 	stream_paused = value
-	_players[current_segment].stream_paused = value
+	self._current_player.stream_paused = value
 
 func get_stream_paused() -> bool:
-	return _players[current_segment].stream_paused
+	return self._current_player.stream_paused
 
 func get_playback_position() -> float:
+	if not is_instance_valid(self._current_segment):
+		return .0
 	var acc: float = .0
-	for i in range(current_segment_index):
+	for i in range(_current_segment_index):
 		acc += segments[i].get_length()
-	acc += current_segment.get_length()
+	acc += self._current_player.get_playback_position()
 	return acc
+	
+func get_current_segment() -> Resource:
+	if not _current_segment_index < len(segments):
+		return null
+	return segments[_current_segment_index]
+
+func get_current_player() -> AudioStreamPlayer:
+	if not _current_segment_index < len(_players):
+		return null
+	return _players[_current_segment_index]
 	

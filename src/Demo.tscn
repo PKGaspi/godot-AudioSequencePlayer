@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://resources/funky_outro.tres" type="Resource" id=1]
 [ext_resource path="res://resources/funky_intro.tres" type="Resource" id=2]
 [ext_resource path="res://addons/AudioSequencePlayers/AudioSequencePlayer.gd" type="Script" id=3]
 [ext_resource path="res://resources/funky_loop.tres" type="Resource" id=4]
+[ext_resource path="res://src/Demo.gd" type="Script" id=5]
+[ext_resource path="res://assets/music/Funky_Drum_n_Bass-loop.wav" type="AudioStream" id=6]
 
 [node name="Demo" type="Control"]
 anchor_right = 1.0
@@ -23,57 +25,432 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 margin_left = 20.0
 margin_top = 10.0
 margin_right = 1004.0
 margin_bottom = 590.0
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-margin_right = 984.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_right = 320.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+script = ExtResource( 5 )
+_asp_path = NodePath("../../../AudioSequencePlayer")
+_data_play_from_path = NodePath("VBoxContainer/PlayFrom/LineEdit")
+_data_seek_to_path = NodePath("VBoxContainer/Seek/LineEdit")
+_info_pos_path = NodePath("Info/PlaybackPosition/Value")
+_info_current_path = NodePath("Info/CurrentSegment/Value")
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "AudioSequencePlayer"
+align = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 320.0
+margin_bottom = 98.0
+
+[node name="Play controls" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Play" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Play"
+
+[node name="Next" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls"]
+margin_left = 82.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Next"
+
+[node name="Stop" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls"]
+margin_left = 164.0
+margin_right = 242.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Stop"
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls"]
+margin_left = 246.0
+margin_right = 320.0
+margin_bottom = 24.0
+text = "Paused"
+
+[node name="PlayFrom" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 320.0
+margin_bottom = 52.0
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/PlayFrom"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Play from"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/PlayFrom"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="Seek" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_top = 56.0
+margin_right = 320.0
+margin_bottom = 80.0
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Seek"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Seek to"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Seek"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 102.0
+margin_right = 320.0
+margin_bottom = 106.0
+
+[node name="Info" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 110.0
+margin_right = 320.0
+margin_bottom = 160.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Info"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "Info"
+
+[node name="PlaybackPosition" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/Info"]
+margin_top = 18.0
+margin_right = 320.0
+margin_bottom = 32.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Info/PlaybackPosition"]
+margin_right = 119.0
+margin_bottom = 14.0
+text = "Playback position: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Info/PlaybackPosition"]
+margin_left = 123.0
+margin_right = 123.0
 margin_bottom = 14.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_left = 415.0
+[node name="CurrentSegment" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/Info"]
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Info/CurrentSegment"]
+margin_right = 115.0
+margin_bottom = 14.0
+text = "Current segment: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Info/CurrentSegment"]
+margin_left = 119.0
+margin_right = 119.0
+margin_bottom = 14.0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 324.0
+margin_right = 328.0
+margin_bottom = 580.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 332.0
+margin_right = 652.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+script = ExtResource( 5 )
+_asp_path = NodePath("../../../AudioStreamPlayer")
+_data_play_from_path = NodePath("VBoxContainer/PlayFrom/LineEdit")
+_data_seek_to_path = NodePath("VBoxContainer/Seek/LineEdit")
+_info_pos_path = NodePath("Info/PlaybackPosition/Value")
+_info_current_path = NodePath("Info/CurrentSegment/Value")
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "AudioSequencePlayer"
+align = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
 margin_top = 18.0
-margin_right = 569.0
-margin_bottom = 38.0
-size_flags_horizontal = 4
+margin_right = 320.0
+margin_bottom = 98.0
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 38.0
+[node name="Play controls" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Play" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Play"
+
+[node name="Next" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls"]
+margin_left = 82.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Next"
+
+[node name="Stop" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls"]
+margin_left = 164.0
+margin_right = 242.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Stop"
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls"]
+margin_left = 246.0
+margin_right = 320.0
+margin_bottom = 24.0
+text = "Paused"
+
+[node name="PlayFrom" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+margin_top = 28.0
+margin_right = 320.0
+margin_bottom = 52.0
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/PlayFrom"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Play from"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/PlayFrom"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="Seek" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+margin_top = 56.0
+margin_right = 320.0
+margin_bottom = 80.0
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Seek"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Seek to"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Seek"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 102.0
+margin_right = 320.0
+margin_bottom = 106.0
+
+[node name="Info" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 110.0
+margin_right = 320.0
+margin_bottom = 160.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "Info"
+
+[node name="PlaybackPosition" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info"]
+margin_top = 18.0
+margin_right = 320.0
+margin_bottom = 32.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info/PlaybackPosition"]
+margin_right = 119.0
+margin_bottom = 14.0
+text = "Playback position: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info/PlaybackPosition"]
+margin_left = 123.0
+margin_right = 123.0
+margin_bottom = 14.0
+
+[node name="CurrentSegment" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info"]
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info/CurrentSegment"]
+margin_right = 115.0
+margin_bottom = 14.0
+text = "Current segment: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Info/CurrentSegment"]
+margin_left = 119.0
+margin_right = 119.0
+margin_bottom = 14.0
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 656.0
+margin_right = 660.0
+margin_bottom = 580.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 664.0
+margin_right = 984.0
+margin_bottom = 580.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "AudioSequencePlayer"
+align = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3"]
+margin_top = 18.0
+margin_right = 320.0
+margin_bottom = 94.0
+
+[node name="Play controls" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer"]
+margin_right = 320.0
 margin_bottom = 20.0
-text = "play"
+size_flags_horizontal = 3
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 42.0
-margin_right = 52.0
+[node name="Play" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls"]
+margin_right = 104.0
 margin_bottom = 20.0
-custom_constants/separation = 10
+size_flags_horizontal = 3
+text = "Play"
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 56.0
-margin_right = 96.0
+[node name="Next" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls"]
+margin_left = 108.0
+margin_right = 212.0
 margin_bottom = 20.0
-text = "next"
+size_flags_horizontal = 3
+text = "Next"
 
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 100.0
-margin_right = 110.0
+[node name="Stop" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls"]
+margin_left = 216.0
+margin_right = 320.0
 margin_bottom = 20.0
-custom_constants/separation = 10
+size_flags_horizontal = 3
+text = "Stop"
 
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 114.0
-margin_right = 154.0
-margin_bottom = 20.0
-text = "stop"
+[node name="PlayFrom" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer"]
+margin_top = 24.0
+margin_right = 320.0
+margin_bottom = 48.0
 
-[node name="SequenceAudioStreamPlayer" type="Node" parent="."]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/PlayFrom"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Play from"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/PlayFrom"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="Seek" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer"]
+margin_top = 52.0
+margin_right = 320.0
+margin_bottom = 76.0
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Seek"]
+margin_right = 158.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Seek to"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Seek"]
+margin_left = 162.0
+margin_right = 320.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "0.0"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer3"]
+margin_top = 98.0
+margin_right = 320.0
+margin_bottom = 102.0
+
+[node name="Info" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3"]
+margin_top = 106.0
+margin_right = 320.0
+margin_bottom = 156.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info"]
+margin_right = 320.0
+margin_bottom = 14.0
+text = "Info"
+
+[node name="PlaybackPosition" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info"]
+margin_top = 18.0
+margin_right = 320.0
+margin_bottom = 32.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info/PlaybackPosition"]
+margin_right = 119.0
+margin_bottom = 14.0
+text = "Playback position: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info/PlaybackPosition"]
+margin_left = 123.0
+margin_right = 123.0
+margin_bottom = 14.0
+
+[node name="CurrentSegment" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info"]
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info/CurrentSegment"]
+margin_right = 115.0
+margin_bottom = 14.0
+text = "Current segment: "
+
+[node name="Value" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer3/Info/CurrentSegment"]
+margin_left = 119.0
+margin_right = 119.0
+margin_bottom = 14.0
+
+[node name="AudioSequencePlayer" type="Node" parent="."]
 script = ExtResource( 3 )
 segments = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 1 ) ]
-autoplay = true
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="SequenceAudioStreamPlayer" method="play"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button2" to="SequenceAudioStreamPlayer" method="next"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button3" to="SequenceAudioStreamPlayer" method="stop"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls/Play" to="AudioSequencePlayer" method="play"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls/Next" to="AudioSequencePlayer" method="next"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls/Stop" to="AudioSequencePlayer" method="stop"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Play controls/CheckBox" to="MarginContainer/HBoxContainer/VBoxContainer" method="paused"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/PlayFrom/Button" to="MarginContainer/HBoxContainer/VBoxContainer" method="play_from"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Seek/Button" to="MarginContainer/HBoxContainer/VBoxContainer" method="seek_to"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls/Play" to="AudioStreamPlayer" method="play"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls/Stop" to="AudioStreamPlayer" method="stop"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Play controls/CheckBox" to="MarginContainer/HBoxContainer/VBoxContainer2" method="paused"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/PlayFrom/Button" to="MarginContainer/HBoxContainer/VBoxContainer2" method="play_from"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer/Seek/Button" to="MarginContainer/HBoxContainer/VBoxContainer2" method="seek_to"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls/Play" to="AudioSequencePlayer" method="play"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls/Next" to="AudioSequencePlayer" method="next"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/Play controls/Stop" to="AudioSequencePlayer" method="stop"]
